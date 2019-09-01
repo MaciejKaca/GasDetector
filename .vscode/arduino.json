@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:micro",
-    "sketch": "main.ino",
+    "sketch": "SmokeDetector.ino",
     "port": "COM3"
 }
