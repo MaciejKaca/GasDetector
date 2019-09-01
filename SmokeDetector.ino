@@ -1,8 +1,10 @@
 #include "LCDDisplay.h"
 #include "MQ2.h"
+#include "temperatureSensor.h"
 
 LCDDisplay *lcd;
 MQ2 smokeDetector;
+temperatureSensor tempSensor;
 
 void setup()
 {
@@ -13,4 +15,5 @@ void setup()
 void loop()
 {
 	lcd->printMessage("MQ2: " + String(smokeDetector.read_sensor()), 0);
+	lcd->printMessage(String(tempSensor.read_sensor()) + " C", 1);
 }
