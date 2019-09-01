@@ -1,6 +1,6 @@
 #include <LiquidCrystal_I2C.h>
 
-class NewLCD
+class LCDDisplay
 {
 private:
     const struct {
@@ -19,12 +19,12 @@ private:
     static const t_backlightPol pol = POSITIVE;
 
     const LiquidCrystal_I2C lcd;
-    String firstLine, secondLine;
+    String text[size.height];
 
 public:
     // @param      lcd_Addr[in] I2C address of the IO expansion module. For I2CLCDextraIO,
     // the address can be configured using the on board jumpers.
-    NewLCD(const byte lcd_Addr) : lcd(lcd_Addr, En, Rw, Rs, d4, d5, d6, d7, backlighPin, pol)
+    LCDDisplay(const byte lcd_Addr) : lcd(lcd_Addr, En, Rw, Rs, d4, d5, d6, d7, backlighPin, pol)
     {
         lcd.begin(size.height, size.width);
         lcd.backlight();
@@ -33,7 +33,21 @@ public:
     void printMessage(String message, byte line);
 };
 
-//TODO
-void NewLCD::printMessage(String messsage, byte line)
+void LCDDisplay::printMessage(String messsage, byte line)
 {
+    const int messageLenght = messsage.length();
+
+    // Refresh lcd only if the new message is longer
+    if(messageLenght > text[line])
+    {
+        lcd.clear();
+    }
+
+    text[line] = messsage;
+
+    for(int i=0; i < size.width; i++)
+    {
+        lcd.setCursor(0, i);
+        lcd.print(text[i]);
+    }
 }
